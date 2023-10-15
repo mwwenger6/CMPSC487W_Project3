@@ -1,0 +1,24 @@
+﻿@using CMPSC487W_Project2.Entities;
+@using CMPSC487W_Project2.Entities.Forms;
+@model ItemViewModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+    string isNew = Model.Id > 0 ? "Update" : "Add";
+
+    Modal<ItemViewModel> modal = new($"{isNew} Item", "Item",
+        Model, $"{isNew}", "add");
+    ModalPage<ItemViewModel> page1 = new();
+    page1.AddInput(m => m.Id, hidden: true);
+    page1.AddInput(m => m.FilePath, hidden: true);
+    page1.AddInput(m => m.Name, "Name");
+    page1.AddInput(m => m.Description, "Description");
+    page1.AddInput(m => m.FormFile, "File", required: false);
+    modal.AddPages(page1);
+    modal.UseFormAction(Url.Action("AddItem", "Home"));
+
+    //modal.Footer.Buttons.Last().OnClick = "addObject('Contact')";
+}
+
+@modal.GetHtml(Html)
+  

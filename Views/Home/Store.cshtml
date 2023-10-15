@@ -1,0 +1,131 @@
+﻿@using CMPSC487W_Project2.Entities;
+@using CMPSC487W_Project2.Entities.Forms;
+
+@model List<Item>
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+    //List<Item> idSorted = Model.OrderBy(item => item.Id).ToList();
+    List<Item> nameSorted = Model.OrderBy(item => item.Name).ToList();
+
+}
+
+    <div class="container">
+        <div class="row">
+            <div>
+                <button id="openAddItemModal" class="btn btn-primary float-end" onclick="showModal(event, 'addItem')">Add Item</button>
+            </div>
+            <div class="col-md-6 offset-md-3">
+                <div class="input-group mb-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by Id or Name">
+                    <div class="input-group-append">
+                        <select id="sortOrder" class="form-control">
+                            <option value="id">Id</option>
+                            <option value="name">Name</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row" id="filteredItems">
+        @foreach(Item item in Model)
+        {
+            <div class="col-4 mb-3">
+                <center>
+                    <div id="@item.Id" class="floatingDiv text-center" height="350px" width="350px">
+                        <button class="btn btn-warning float-start" onclick="showModal(event, 'addItem', '@item.Id')">Edit</button>
+                        <a class="btn btn-danger float-end" href="/Home/DeleteItem"></a>
+                        <h3>@item.Name</h3>
+                        <img src="~/Imgs/@item.FilePath" height="200px" width="200px">
+                        <div>Description: @item.Description</div>
+                    </div>
+                </center>
+            </div>
+        }
+        </div>
+    </div>
+
+@IModal.ModalContainer("addItem", Url.Action("_AddItem"), staticBackdrop:true)
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+
+    function showModal(e, modalnm, id = 0) {
+        e?.preventDefault();
+        console.log('here')
+        let mdl = $(`#${modalnm}Modal`);
+        mdl.load(`${mdl.attr('href')}/${id}`, function () { mdl.modal('show'); });
+    }
+    function updateFileInput(inp) { $(inp).attr("noupload", false).parent().find('label').attr('title', inp.value).find('span').text(inp.value); }
+
+    function addObject(objName) {
+            $(`#add${objName}Form`).submit();
+    } 
+    function deleteItem(id) {
+        $.post("/Home/DeleteItem", { id: id })
+            .done(function () {
+                // Handle success here
+                location.reload(); // Reload the page
+            })
+            .fail(function () {
+                // Handle error here
+                alert("Failed to delete the item.");
+            });
+    }
+    $(document).ready(function () {
+        displayAllItems();
+
+        $('#searchInput').on('input', function () {
+            filterItems($('#sortOrder').val(), $(this).val());
+        });
+
+        $('#sortOrder').on('change', function () {
+            displayAllItems();
+            filterItems($('#sortOrder').val(), $('#searchInput').val()); // Reapply any active filters after sorting
+        });
+
+        function displayAllItems() {
+            $('#filteredItems').empty();
+            @foreach (var item in Model)
+            {
+                <text>
+                            var itemDiv = $(`<div class="col-4 mb-3"><center><button class="btn btn-warning float-start" onclick="showModal(event, 'addItem', '@item.Id')">Edit</button><a class="btn btn-danger float-end" onclick="deleteItem(@item.Id)">Remove</a><div id="@item.Id" class="floatingDiv"><h3>@item.Name</h3><img src="~/Imgs/@item.FilePath" height="200px" width="200px"><div>Description: @item.Description</div></div></center></div>`);
+                    $('#filteredItems').append(itemDiv);
+                </text>
+            }
+        }
+
+        
+
+        function filterItems(selected, searchText) {
+            $('#filteredItems').empty();
+            var searchRegex = new RegExp(searchText, 'i');
+            if(selected == "id"){
+                @foreach (var item in Model)
+                {
+                    <text>
+                        if (searchRegex.test('@item.Id') || searchRegex.test('@item.Name') || searchRegex.test('@item.Description')) {
+                            var itemDiv = $(`<div class="col-4 mb-3"><center><button class="btn btn-warning float-start" onclick="showModal(event, 'addItem', '@item.Id')">Edit</button><a class="btn btn-danger float-end"  onclick="deleteItem(@item.Id)">Remove</a><div id="@item.Id" class="floatingDiv"><h3>@item.Name</h3><img src="~/Imgs/@item.FilePath" height="200px" width="200px"><div>Description: @item.Description</div></div></center></div>`);
+                            $('#filteredItems').append(itemDiv);
+                        }
+                    </text>
+                }
+            }
+            else{
+                @foreach (var item in nameSorted)
+                {
+                    <text>
+                        if (searchRegex.test('@item.Id') || searchRegex.test('@item.Name') || searchRegex.test('@item.Description')) {
+                            var itemDiv = $(`<div class="col-4 mb-3"><center><button class="btn btn-warning float-start" onclick="showModal(event, 'addItem', '@item.Id')">Edit</button><a class="btn btn-danger float-end" onclick="deleteItem(@item.Id)">Remove</a><div id="@item.Id" class="floatingDiv"><h3>@item.Name</h3><img src="~/Imgs/@item.FilePath" height="200px" width="200px"><div>Description: @item.Description</div></div></center></div>`);
+                            $('#filteredItems').append(itemDiv);
+                        }
+                    </text>
+                }
+            }
+        }
+
+
+    });
+</script>
