@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using CMPSC487_Project2.Entities;
+using CMPSC487W_Project2.Entities;
 using static System.Net.Mime.MediaTypeNames;
 using System.Buffers;
 using System.Data;
@@ -8,7 +8,7 @@ using System.Diagnostics.Metrics;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CMPSC487_Project2.Services
+namespace CMPSC487W_Project2.Services
 {
     public class AppDbContext : DbContext
     {
