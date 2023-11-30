@@ -1,54 +1,141 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CMPSC487W_Project2.Services;
-using CMPSC487W_Project2.Entities;
+﻿using CMPSC487W_Project3.Entities;
+using CMPSC487W_Project3.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace CMPSC487W_Project2.Services
+namespace CMPSC487W_Project3.Services
 {
     public class AppGetDataTools
     {
         private readonly AppDbContext dbContext;
+        private readonly DbContextOptions<AppDbContext> _dbContextOptions;
 
         public AppGetDataTools(AppDbContext context)
         {
             dbContext = context;
         }
-
-        public IEnumerable<Item> GetItems()
+        public AppGetDataTools(DbContextOptions<AppDbContext> contextOptions)
         {
-            return dbContext.Items;
+            dbContext = new(contextOptions);
         }
 
-        public Item GetItem(int id)
+
+        public IEnumerable<RequestType> GetRequestTypes()
         {
-            return dbContext.Items
-                .Where(i => i.Id == id).FirstOrDefault();
+            return dbContext.RequestTypes;
         }
 
-        public void AddItem(Item item)
+        public Login IsLogin(string username, string password)
         {
-            if (dbContext.Items.Any(i => i.Id == item.Id))
+            return dbContext.Logins.Where(l => l.Username == username && l.Password == password).FirstOrDefault();
+        }
+
+        public Tenant GetTenantFromLogin(int loginId)
+        {
+            return dbContext.Tenants.Where(t => t.LoginId == loginId).FirstOrDefault();
+        }
+
+        public vwLogin GetTenantLogin(int tenantId)
+        {
+            return dbContext.vwLogins.Where(t => t.TenantId == tenantId).FirstOrDefault();
+        }
+        public IEnumerable<vwRequest> GetVwRequests()
+        {
+            return dbContext.VwRequests;
+        }
+        public IEnumerable<vwRequest> GetTenantRequests(int id)
+        {
+            return dbContext.VwRequests
+                .Where(r => r.TenantId == id);
+        }
+        public IEnumerable<vwLogin> GetAllTenants()
+        {
+            return dbContext.vwLogins;
+        }
+        public IEnumerable<Appartment> GetAvailableAppartments(string appartment)
+        {
+            return dbContext.Appartments
+                .Where(a => !a.Available || a.Id == appartment);
+        }
+
+        public void AddRequest(Request request)
+        {
+            if (dbContext.Requests.Any(i => i.Id == request.Id))
             {
-                dbContext.Items
-                    .Where(a => a.Id == item.Id)
+                dbContext.Requests
+                    .Where(a => a.Id == request.Id)
                     .ExecuteUpdate(i => i
-                        .SetProperty(a => a.Description, item.Description)
-                        .SetProperty(a => a.Name, item.Name)
-                        .SetProperty(a => a.FilePath, item.FilePath)
+                        .SetProperty(a => a.StatusId, 2)
                     );
             }
             else
             {
-                dbContext.Items.Add(item);
+                dbContext.Requests.Add(request);
                 dbContext.SaveChanges();
             }
         }
 
-        public void DeleteItem(int id)
+        public void AddTenant(Tenant tenant)
         {
-            if(id > 0)
+            if (dbContext.Tenants.Any(i => i.Id == tenant.Id))
             {
-                dbContext.Items
-                    .Where(i => i.Id == id)
+                dbContext.Tenants
+                    .Where(a => a.Id == tenant.Id)
+                    .ExecuteUpdate(i => i
+                        .SetProperty(t => t.Name, tenant.Name)
+                        .SetProperty(t => t.AppartmentNumber, tenant.AppartmentNumber)
+                        .SetProperty(t => t.CheckIn, tenant.CheckIn)
+                        .SetProperty(t => t.CheckOut, tenant.CheckOut)
+                        .SetProperty(t => t.Phone, tenant.Phone)
+                        .SetProperty(t => t.Email, tenant.Email)
+                    );
+            }
+            else
+            {
+                dbContext.Tenants.Add(tenant);
+                dbContext.SaveChanges();
+            }
+        }
+        public int AddLogin(Login login)
+        {
+            if (dbContext.Logins.Any(i => i.Id == login.Id))
+            {
+                dbContext.Logins
+                    .Where(a => a.Id == login.Id)
+                    .ExecuteUpdate(i => i
+                        .SetProperty(t => t.Username, login.Username)
+                        .SetProperty(t => t.Password, login.Password)
+                    );
+                return login.Id;
+            }
+            else
+            {
+                dbContext.Logins.Add(login);
+                dbContext.SaveChanges();
+                return login.Id;
+            }
+        }
+
+        public void UpdateAppartments(string id, bool occupied)
+        {
+            dbContext.Appartments
+                    .Where(a => a.Id == id)
+                    .ExecuteUpdate(i => i
+                        .SetProperty(t => t.Available, occupied)
+                    );
+        }
+        public void DeleteTenant(int tenantId, int loginId)
+        {
+            if (tenantId > 0)
+            {
+                dbContext.Tenants
+                    .Where(i => i.Id == tenantId)
+                    .ExecuteDelete();
+            }
+            if (loginId > 0)
+            {
+                dbContext.Logins
+                    .Where(i => i.Id == loginId)
                     .ExecuteDelete();
             }
         }

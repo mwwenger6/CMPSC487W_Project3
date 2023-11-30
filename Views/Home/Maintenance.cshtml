@@ -1,0 +1,110 @@
+﻿@using CMPSC487W_Project3.Entities;
+@using CMPSC487W_Project3.Entities.Forms;
+@model List<vwRequest>
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="floatingDiv p-3">
+            <div class="row d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 col-12 text-center">Maintenance Home Page</h4>
+            </div>
+            <hr />
+            <div class="mb-3 d-flex align-items-center">
+                <select id="searchType" class="form-control me-2">
+                    <option value="StatusName">Status Name</option>
+                    <option value="TypeName">Type Name</option>
+                    <option value="AppartmentNumber">Appartment Number</option>
+                </select>
+                <input type="text" id="searchFilter" placeholder="Search..." class="form-control me-2">
+                <label for="startDate" class="form-label me-2">Start Date:</label>
+                <input type="datetime-local" id="startDate" class="form-control me-2">
+                <label for="endDate" class="form-label me-2">End Date:</label>
+                <input type="datetime-local" id="endDate" class="form-control me-2">
+            </div>
+
+            <div class="row" id="filteredItems">
+                @foreach (vwRequest request in Model)
+                {
+                    <div class="col-4 mb-3">
+                        <center>
+                            <div id="@request.Id" style="height: 450px; background-color: gray;" class="floatingDiv text-center" height="350px" width="350px">
+                                <p>Sent:@request.CreationDate</p>
+                                <p>Appartment: #@request.AppartmentNumber</p>
+                                <p>Status: @request.StatusName</p>
+                                @if(request.StatusId == 1)
+                                {
+                                    <form method="post" action="/Home/UpdateRequest/@request.Id">
+                                        <button type="submit" class="btn btn-primary">Mark Complete</button>
+                                    </form>
+                                }
+                                <hr />
+                                <h3>@request.TypeName</h3>
+                                <p>@request.Description</p>
+                                @if (request.PhotoPath != "")
+                                {
+                                    <img src="~/Imgs/@request.PhotoPath" height="200px" width="200px">
+                                }
+                            </div>
+                        </center>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function filterRequests() {
+            var searchType = $('#searchType').val();
+            var searchFilter = $('#searchFilter').val().toLowerCase();
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+
+            $('#filteredItems > div').each(function () {
+                var request = $(this);
+                var matchesSearch = false;
+
+                if (searchFilter) {
+                    switch (searchType) {
+                        case 'StatusName':
+                            matchesSearch = request.text().toLowerCase().includes("status: " + searchFilter);
+                            break;
+                        case 'TypeName':
+                            var typeName = request.find('h3').text().toLowerCase();
+                            matchesSearch = typeName.includes(searchFilter);
+                            break;
+                        case 'AppartmentNumber':
+                            matchesSearch = request.text().toLowerCase().includes("appartment: " + searchFilter);
+                            break;
+                    }
+                } else {
+                    matchesSearch = true; // Show all if search filter is empty
+                }
+
+                // Extract the CreationDate from the request
+                var creationDateText = request.find('p:contains("Sent:")').text().split('Sent:')[1].trim();
+                var creationDate = new Date(creationDateText);
+
+                // Check if the creation date falls within the start and end date range
+                var isWithinDateRange = (!startDate || creationDate >= new Date(startDate)) &&
+                    (!endDate || creationDate <= new Date(endDate));
+
+                if (matchesSearch && isWithinDateRange) {
+                    request.show();
+                } else {
+                    request.hide();
+                }
+            });
+        }
+
+        // Attach event listeners
+        $('#searchFilter, #startDate, #endDate, #searchType').on('input change', filterRequests);
+
+        // Initial filter call
+        filterRequests();
+    });
+</script>

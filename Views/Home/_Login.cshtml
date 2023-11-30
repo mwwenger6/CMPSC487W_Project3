@@ -1,0 +1,33 @@
+﻿@using CMPSC487W_Project3.Entities;
+@using CMPSC487W_Project3.Entities.Forms;
+@model LoginViewModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+    Container<LoginViewModel> container = new();
+    container.AddInput(m => m.Username, "Username:", required: false);
+    container.AddInput(m => m.Password, "Password:", required: false);
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="m-3" style="min-width:250px;max-width:450px;width:80%;">
+            <div class="bg-white rounded p-3">
+                <h2 class="text-center mb-4">Login</h2>
+                <hr/>
+                <form action="/Home/Login" method="post" asp-antiforgery="true">
+                    @container.Render(Html, Model, outerClass:"col-12")
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary fw-thick float-end">Login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    document.getElementById("logout").style.display = "none";
+</script>

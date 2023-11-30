@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CMPSC487W_Project2.Entities.Forms
+namespace CMPSC487W_Project3.Entities.Forms
 {
     public interface IModalPage : IContainer
     {

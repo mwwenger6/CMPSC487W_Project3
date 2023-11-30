@@ -1,0 +1,25 @@
+﻿@using CMPSC487W_Project3.Entities;
+@using CMPSC487W_Project3.Entities.Forms;
+@using CMPSC487W_Project3.Controllers;
+@model RequestViewModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+    string isNew = Model.Id > 0 ? "Update" : "Add";
+
+    Modal<RequestViewModel> modal = new($"{isNew} Item", "Item",
+        Model, $"{isNew}", "add");
+    ModalPage<RequestViewModel> page1 = new();
+    page1.AddInput(m => m.Id, hidden: true);
+    page1.AddInput(m => m.FilePath, hidden: true);
+    page1.AddInput(m => m.TypeId, "Location", dropDownList: HomeController.RequestTypes(), required: false);
+    page1.AddInput(m => m.Description, "Short Description");
+    page1.AddInput(m => m.FormFile, "File", required: false);
+    page1.AddInput(m => m.TenantId, hidden: true);
+    modal.AddPages(page1);
+    modal.UseFormAction(Url.Action("AddRequest", "Home"));
+
+}
+
+@modal.GetHtml(Html)
+  

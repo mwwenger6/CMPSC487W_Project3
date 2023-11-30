@@ -1,18 +1,33 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    background-color: black
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: black
+}
+
+.floatingDiv {
+    /*background-color: rgba(84, 89, 95, 0.05);*/
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    background-color: white;
+}
+
+#topBar {
+    background-color: Navy;
+    color: white;
 }

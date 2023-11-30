@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CMPSC487W_Project2.Entities.Forms.Inputs
+namespace CMPSC487W_Project3.Entities.Forms.Inputs
 {
     public class TextInput<T, TResult> : Input<T>
     {

@@ -1,9 +1,9 @@
-﻿using CMPSC487W_Project2.Entities.Forms.Inputs;
+﻿using CMPSC487W_Project3.Entities.Forms.Inputs;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 
-namespace CMPSC487W_Project2.Entities.Forms
+namespace CMPSC487W_Project3.Entities.Forms
 {
     public interface IContainer
     {
@@ -51,6 +51,13 @@ namespace CMPSC487W_Project2.Entities.Forms
         )
         {
             Contents.Add(new MultiLineInput<T, IComparable>(field, label, rows, placeHolder, required, readOnly, outerClass, hideable));
+        }
+        public void AddInput<TResult>(Expression<Func<T, TResult>> field, string label, SelectList dropDownList,
+            bool required = true, bool disabled = false, string outerClass = "col-12 col-md-6"
+        )
+        {
+            Contents.Add(new DropDown<T, TResult>(field, label, required, dropDownList, disabled,
+                outerClass));
         }
         public void AddPassword(Expression<Func<T, IComparable>> field, string label, string placeHolder = "",
             bool required = true, bool readOnly = false, string outerClass = "col-12 col-md-6"
@@ -106,6 +113,11 @@ namespace CMPSC487W_Project2.Entities.Forms
             foreach (IRenderable<T> content in Contents)
                 htmlConcat.Add(content.Render(Html, Model, outerClass, outerStyle));
             return htmlConcat.Concatenate();
+        }
+
+        public string GetValue(T model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,22 +3,29 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CMPSC487W_Project2</title>
+    <title>@ViewData["Title"] - CMPSC487W_Project3</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CMPSC487W_Project2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CMPSC487W_Project3.styles.css" asp-append-version="true" />
 </head>
 <body>
-
     <div class="text-center" id="topBar">
-        <h1 class="display-4">Welcome To the Farmer's Market</h1>
-        <hr/>
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-4 text-end mb-0">Appartment Maintenance Site</h1>
+            </div>
+            <div class="col-md-4 float-end">
+                <a id="logout" class="btn btn-secondary text-black" href="/Home/_Login">Log Out</a>
+            </div>
+        </div>
+        <hr />
     </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,10 +1,10 @@
-﻿using CMPSC487W_Project2.Entities.Forms.Inputs;
-using CMPSC487W_Project2.Entities.Forms;
+﻿using CMPSC487W_Project3.Entities.Forms;
+using CMPSC487W_Project3.Entities.Forms.Elements;
+using CMPSC487W_Project3.Entities.Forms.Inputs;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using CMPSC487W_Project2.Entities.Forms.Elements;
 
-namespace CMPSC487W_Project2.Entities.Forms
+namespace CMPSC487W_Project3.Entities.Forms
 {
     public interface IModal
     {

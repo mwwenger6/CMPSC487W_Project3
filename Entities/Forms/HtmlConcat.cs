@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using System.Text.Encodings.Web;
 
-namespace CMPSC487W_Project2.Entities.Forms
+namespace CMPSC487W_Project3.Entities.Forms
 {
     public class HtmlConcat
     {

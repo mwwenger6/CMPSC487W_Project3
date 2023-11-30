@@ -1,13 +1,10 @@
-﻿@using CMPSC487W_Project2.Entities;
-@using CMPSC487W_Project2.Entities.Forms;
+﻿@*@using CMPSC487W_Project3.Entities;
+@using CMPSC487W_Project3.Entities.Forms;
 
 @model List<Item>
 @{
     Layout = "~/Pages/Shared/_Layout.cshtml";
-
-    //List<Item> idSorted = Model.OrderBy(item => item.Id).ToList();
     List<Item> nameSorted = Model.OrderBy(item => item.Name).ToList();
-
 }
 
     <div class="container">
@@ -126,6 +123,6 @@
             }
         }
 
-
     });
 </script>
+*@

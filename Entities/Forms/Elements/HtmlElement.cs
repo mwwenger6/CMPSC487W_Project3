@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Html;
 
-namespace CMPSC487W_Project2.Entities.Forms.Elements
+namespace CMPSC487W_Project3.Entities.Forms.Elements
 {
     public class HtmlElement
     {

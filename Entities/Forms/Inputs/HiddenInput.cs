@@ -1,9 +1,9 @@
 ﻿
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 
-namespace CMPSC487W_Project2.Entities.Forms.Inputs
+namespace CMPSC487W_Project3.Entities.Forms.Inputs
 {
     public class HiddenInput<T, TResult> : TextInput<T, TResult>
     {

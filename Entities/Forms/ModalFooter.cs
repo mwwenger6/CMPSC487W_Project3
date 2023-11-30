@@ -1,9 +1,9 @@
 ﻿
-using CMPSC487W_Project2.Entities.Forms.Elements;
+using CMPSC487W_Project3.Entities.Forms.Elements;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CMPSC487W_Project2.Entities.Forms
+namespace CMPSC487W_Project3.Entities.Forms
 {
     public class ModalFooter
     {

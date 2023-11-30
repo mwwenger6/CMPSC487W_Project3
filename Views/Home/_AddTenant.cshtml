@@ -1,0 +1,33 @@
+﻿@using CMPSC487W_Project3.Entities;
+@using CMPSC487W_Project3.Entities.Forms;
+@using CMPSC487W_Project3.Controllers;
+@model vwLogin
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+    string isNew = Model.Id > 0 ? "Update" : "Add";
+
+    Modal<vwLogin> modal = new($"{isNew} Tenant", "Tenant",
+        Model, $"{isNew}", "add");
+    ModalPage<vwLogin> page1 = new();
+    page1.AddInput(m => m.Username, "Username");
+    page1.AddInput(m => m.Password, "Password");
+    page1.AddInput(m => m.Email, "Email");
+    page1.AddInput(m => m.Phone, "Phone Number");
+    page1.AddInput(m => m.Name, "Name");
+    page1.AddInput(m => m.AppartmentNumber, "Appartment Number", dropDownList: HomeController.AvailableNumbers(Model.AppartmentNumber));
+    page1.AddInput(m => m.Id, hidden: true);
+    page1.AddInput(m => m.TenantId, hidden: true);
+    page1.AddInput(m => m.CheckIn, hidden: true);
+    if(isNew == "Update")
+    {
+        page1.AddInput(m => m.CheckOut, hidden: true);
+    }
+    modal.AddPages(page1);
+    modal.UseFormAction(Url.Action("AddTenant", "Home"));
+
+    //modal.Footer.Buttons.Last().OnClick = "addObject('Contact')";
+}
+
+@modal.GetHtml(Html)
+  

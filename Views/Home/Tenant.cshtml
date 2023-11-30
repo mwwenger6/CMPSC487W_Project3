@@ -1,0 +1,56 @@
+﻿@using CMPSC487W_Project3.Entities;
+@using CMPSC487W_Project3.Entities.Forms;
+@model TenantViewModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="floatingDiv p-3">
+            <div class="row d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 col-8 text-center">Tenant Home Page</h4>
+                <div class="col-4 float-end"><button class="btn btn-primary" onclick="showModal(event, 'addRequest', '@Model.Id')">Submit Maintenance Request</button></div>
+            </div>
+            <hr />
+            <div class="row" id="filteredItems">
+                @foreach (vwRequest request in Model.Requests)
+                {
+                    <div class="col-4 mb-3">
+                        <center>
+                            <div id="@request.Id" style="height: 400px; background-color: gray;" class="floatingDiv text-center" height="350px" width="350px">
+                                <p>Sent:@request.CreationDate</p>
+                                <p>Status: @request.StatusName</p>
+                                <hr/>
+                                <h3>@request.TypeName</h3>
+                                <p>@request.Description</p>
+                                @if(request.PhotoPath != "")
+                                {
+                                    <img src="~/Imgs/@request.PhotoPath" height="200px" width="200px">
+                                }
+                            </div>
+                        </center>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@IModal.ModalContainer("addRequest", Url.Action("_AddRequest"), staticBackdrop:true)
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    function showModal(e, modalnm, id = 0) {
+        e?.preventDefault();
+        console.log('here')
+        let mdl = $(`#${modalnm}Modal`);
+        mdl.load(`${mdl.attr('href')}/${id}`, function () { mdl.modal('show'); });
+    }
+    function updateFileInput(inp) { $(inp).attr("noupload", false).parent().find('label').attr('title', inp.value).find('span').text(inp.value); }
+
+    function addObject(objName) {
+        $(`#add${objName}Form`).submit();
+    } 
+    
+</script>
+
