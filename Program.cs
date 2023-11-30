@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using CMPSC487_Project2.Services;
+using CMPSC487W_Project3.Services;
+using System;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,34 +12,31 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddRazorPages();
+
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // You can change the timeout duration
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
 ConfigurationManager config = builder.Configuration;
-builder.Services.AddControllers();
+
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseSession();
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllers(); 
+    endpoints.MapDefaultControllerRoute();
 });
+
+app.MapRazorPages();
+
 app.Run();
