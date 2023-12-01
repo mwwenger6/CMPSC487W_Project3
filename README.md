@@ -1,2 +1,3 @@
-Video of Project is file: 2023-10-14 21-13-24.mkv
+Screenshots are in file Project3ScreenShots.pdf
+
 
